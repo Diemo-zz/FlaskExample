@@ -1,4 +1,5 @@
 import sqlite3 as s3
+import pandas as pd
 
 class database_connection:
     def __init__(self, name):
@@ -12,3 +13,7 @@ class database_connection:
 
     def get_query_as_dataframe(query):
         n = pd.read_sql_query(query, self.conn)
+        return n
+
+    def store_dataframe_as_table(self, frame_in, name, exists='replace'):
+        frame_in.to_sql(name, self.conn, if_exists= exists)

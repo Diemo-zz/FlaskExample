@@ -1,4 +1,6 @@
 import pandas as pd
+from db_connection import database_connection
+from constansts import TABLE_NAME
 
 input = read_csv("Adressen__Berlin.csv")
 
@@ -6,3 +8,7 @@ columns_to_keep = [s for s in input.columns if len(input[s].unique())>1] #  Assu
 
 df_to_store = input[columns_to_keep]
 
+df_to_store = df_to_store.drop(['OBJECTID_1'], axis = 1)
+
+with database_connection('example.db') as db:
+    db.store_dataframe_as_table(df_to_store, TABLE_NAME)
