@@ -1,6 +1,5 @@
 import pandas as pd
-from db_connection import database_connection
-from constants import TABLE_NAME
+from flask_restful import Resource
 
 input = pd.read_csv("Adressen__Berlin.csv")
 
@@ -10,9 +9,9 @@ df_to_store = input[columns_to_keep]
 
 df_to_store = df_to_store.drop(['OBJECTID_1'], axis = 1)
 
-with database_connection('example.db') as db:
-    db.store_dataframe_as_table(df_to_store, TABLE_NAME)
+#with database_connection('example.db') as db:
+##    db.store_dataframe_as_table(df_to_store, TABLE_NAME)
 
-class Importer:
+class Importer(Resource):
     def post(self):
         pass

@@ -17,3 +17,4 @@ class database_connection:
 
     def store_dataframe_as_table(self, frame_in, name, exists='replace'):
         frame_in.to_sql(name, self.conn, if_exists= exists)
+        print("ONE")
