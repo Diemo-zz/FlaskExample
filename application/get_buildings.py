@@ -13,39 +13,30 @@ def get_db_engine_and_metadata():
     return g.engine, g.meta
 
 
+def get_table(name):
+    engine, meta = get_db_engine_and_metadata()
+    address_table = Table(name, meta, autoload=True, autoload_with=engine)
+    return address_table
+
 
 class addresses(Resource):
-    def get(self, zip = None):
+    def get(self, zip=None):
         engine, meta = get_db_engine_and_metadata()
-        meta = MetaData(bind=engine)
-        addresses = Table('addresses', meta, autoload=True, autoload_with=engine)
-        s = select([addresses.c.PLZ])
+        address_table = Table('addresses', meta, autoload=True, autoload_with=engine)
+        s = select([address_table.c.PLZ])
         if zip:
-            s = s.where(addresses.c.PLZ == zip)
+            s = s.where(address_table.c.PLZ == zip)
         c = Counter([r[0] for r in engine.execute(s)])
         return json.dumps(c), 200
+
 
 class added(Resource):
     def get(self, zip = None):
         engine, meta = get_db_engine_and_metadata()
-        addresses = Table('addresses', meta, autoload=True, autoload_with=engine)
-        s = select([addresses.c.STR_DATUM, func.count(addresses.c.PLZ)], group_by = addresses.c.STR_DATUM)
+        address_table = Table('addresses', meta, autoload=True, autoload_with=engine)
+        s = select([address_table.c.STR_DATUM, func.count(address_table.c.PLZ)], group_by = address_table.c.STR_DATUM)
         if zip:
-            print("ZIP")
-            s = s.where(addresses.c.PLZ == zip)
+            s = s.where(address_table.c.PLZ == zip)
         results = {r[0]: r[1] for r in engine.execute(s)}
         return json.dumps(results), 200
-
-    #if zip:
-    #    s = s.where(addresses.c.PLZ == zip)
-    #    query = """select STR_DATUM, count() from addresses where PLZ = {0} group by STR_DATUM""".format(zip)
-    #else:
-    #    query = """select STR_DATUM, count() from addresses group by STR_DATUM"""
-    #engine = get_db_engine_and_metadata()
-    #df = engine.execute(query)
-    #output = {"date_added": [],
-    #          "number_of_buildings": []}
-    #for r in df.fetchall():
-    #    output["date_added"].append(r[0])
-    #    output["number_of_buildings"].append(r[1])
 
