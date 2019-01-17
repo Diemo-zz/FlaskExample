@@ -2,7 +2,7 @@ from flask import Flask
 import os
 from flask_restful import Api
 from sqlalchemy import create_engine
-from .get_buildings import addresses, added
+from .get_buildings import Addresses, GetNumAddedPerYear
 
 
 
@@ -21,8 +21,8 @@ def create_application(test_config=None):
 
     api = Api(app)
 
-    api.add_resource(addresses, "/api/v1/number_of_buildings/<string:zip>", "/api/v1/number_of_buildings")
-    api.add_resource(added, "/api/v1/added/<string:zip>", "/api/v1/added")
+    api.add_resource(Addresses, "/api/v1/number_of_buildings/<string:zip>", "/api/v1/number_of_buildings")
+    api.add_resource(GetNumAddedPerYear, "/api/v1/added/<string:zip>", "/api/v1/added")
 
     try:
         os.makedirs(app.instance_path)
