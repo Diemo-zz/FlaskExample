@@ -1,13 +1,17 @@
 from flask import Flask
 import os
 from flask_restful import Api
-from Initial import Initial
+from sqlalchemy import create_engine
+from .get_buildings import addresses, added
+
+
+
 
 def create_application(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
-        DATABASE=os.path.join(app.instance_path, 'Solvemate.sqlite'),
+        engine = create_engine('sqlite:///instance/foo.db')
     )
 
     if test_config is None:
@@ -17,7 +21,8 @@ def create_application(test_config=None):
 
     api = Api(app)
 
-    api.add_resource("/", Initial)
+    api.add_resource(addresses, "/api/v1/number_of_buildings/<string:zip>", "/api/v1/number_of_buildings")
+    api.add_resource(added, "/api/v1/added/<string:zip>", "/api/v1/added")
 
     try:
         os.makedirs(app.instance_path)
@@ -26,3 +31,6 @@ def create_application(test_config=None):
 
     return app
 
+
+if __name__ == "__main__":
+    app = create_application()
