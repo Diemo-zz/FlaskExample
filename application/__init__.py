@@ -1,21 +1,20 @@
 from flask import Flask
 import os
 from flask_restful import Api
-from sqlalchemy import create_engine
 from .get_buildings import Addresses, GetNumAddedPerYear
 
 
-
-
 def create_application(test_config=None):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY="dev",
-        engine = create_engine('sqlite:///instance/foo.db')
-    )
+
+    app = Flask(__name__.split('.')[0], instance_relative_config=True)
+
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
 
     if test_config is None:
-        app.config.from_pyfile("config.py", silent=True)
+        app.config.from_pyfile("config.py")
     else:
         app.config.from_mapping(test_config)
 
@@ -23,11 +22,6 @@ def create_application(test_config=None):
 
     api.add_resource(Addresses, "/api/v1/number_of_buildings/<string:zip>", "/api/v1/number_of_buildings")
     api.add_resource(GetNumAddedPerYear, "/api/v1/added/<string:zip>", "/api/v1/added")
-
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
 
     return app
 
