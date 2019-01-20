@@ -24,6 +24,7 @@ def get_table(name):
 
 class Addresses(Resource):
     def get(self, zip=None):
+        """Returns in JSON format a dictionary of zip: number of buildings. Filterable to a single zip"""
         engine, meta = get_db_engine_and_metadata()
         address_table = Table('addresses', meta, autoload=True, autoload_with=engine)
         s = select([address_table.c.PLZ])
@@ -35,6 +36,7 @@ class Addresses(Resource):
 
 class GetNumAddedPerYear(Resource):
     def get(self, zip=None):
+        """Returns in JSON format a dictionary of year: number of buildings. Filterable by zip."""
         engine, meta = get_db_engine_and_metadata()
         address_table = Table('addresses', meta, autoload=True, autoload_with=engine)
         s = select([address_table.c.STR_DATUM, func.count(address_table.c.PLZ)], group_by=address_table.c.STR_DATUM)
