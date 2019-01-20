@@ -1,0 +1,30 @@
+Setup
+#####
+Set up the environment by activating a virtual environment of your choice and installing the dependencies in the
+requirements.txt file.
+This is not currently set up for use in a production environment - use a uwsgi server instead.
+
+Importing
+#########
+The importer assumes that the data to be imported to the database is in a csv seperated file called Adressen__Berlin.csv
+in the same folder as the importer and run file for the flask application.   Running the importer will create an instance
+folder, and a database in that (called 'foo.db').   The data is stored in a table called addresses.
+
+Running the App
+###############
+Run the app (run.py).   This will create (if it doesn't exist) a folder called instance and attempt to read in configuration
+values from the instance/config.py file. Current values are
+DATABASE_PREFIX - the prefix in sqlalchemy stating the database type.  Default value is 'sqlite:///'
+DATABASE - The path to the database. Default value is '<current_directorz>/instance/foo.db'
+
+Endpoints
+#########
+To get the number of buildings per zip, call the endpoint
+/api/v1/number_of_buildings
+and to filter by zip code just include the zip to filter by to the end of the endpoint. e.g.
+/api/v1/number_of_buildings/10247
+
+To get the distriubution of buildings added by year, use the endpoint
+/api/v1/added
+to filter by the zip simply include the zip to filter by at the end of the endpoint, e.g.
+/api/v1/added/10247
