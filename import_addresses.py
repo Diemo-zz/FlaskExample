@@ -3,14 +3,19 @@ import numpy as np
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from os import makedirs
 
-def import_addresses_to_database():
-    def _get_type(value_in):
-        if isinstance(value_in, np.int_):
-            return Integer
-        else:
-            return String(100)
 
-    data = pd.read_csv("/home/diarmaid/PycharmProjects/Solvemate/application/Adressen__Berlin.csv")
+def _get_type(value_in):
+    if isinstance(value_in, np.int_):
+        return Integer
+    else:
+        return String(100)
+
+
+def import_addresses_to_database(filepath = None):
+    if filepath is None:
+        filepath = 'Addresses__Berlin.csv'
+
+    data = pd.read_csv(filepath)
 
     relative_path = 'instance'
     try:
