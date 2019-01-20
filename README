@@ -24,7 +24,7 @@ To get the number of buildings per zip, call the endpoint
 and to filter by zip code just include the zip to filter by to the end of the endpoint. e.g.
 /api/v1/number_of_buildings/10247
 
-To get the distriubution of buildings added by year, use the endpoint
+To get the distribution of buildings added by year, use the endpoint
 /api/v1/added
 to filter by the zip simply include the zip to filter by at the end of the endpoint, e.g.
 /api/v1/added/10247
