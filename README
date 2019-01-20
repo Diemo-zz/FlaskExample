@@ -15,7 +15,7 @@ Running the App
 Run the app (run.py).   This will create (if it doesn't exist) a folder called instance and attempt to read in configuration
 values from the instance/config.py file. Current values are
 DATABASE_PREFIX - the prefix in sqlalchemy stating the database type.  Default value is 'sqlite:///'
-DATABASE - The path to the database. Default value is '<current_directorz>/instance/foo.db'
+DATABASE - The path to the database. Default value is '<current_directory>/instance/foo.db'
 
 Endpoints
 #########
