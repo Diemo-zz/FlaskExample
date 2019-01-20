@@ -5,6 +5,7 @@ from sqlalchemy.sql import select
 from collections import Counter
 import json
 from flask import current_app
+import datetime
 
 
 def get_db_engine_and_metadata():
@@ -28,7 +29,7 @@ class Addresses(Resource):
         s = select([address_table.c.PLZ])
         if zip:
             s = s.where(address_table.c.PLZ == zip)
-        c = Counter([r[0] for r in engine.execute(s)])
+        c = dict(Counter([r[0] for r in engine.execute(s)]))
         return json.dumps(c), 200
 
 
@@ -39,5 +40,5 @@ class GetNumAddedPerYear(Resource):
         s = select([address_table.c.STR_DATUM, func.count(address_table.c.PLZ)], group_by=address_table.c.STR_DATUM)
         if zip:
             s = s.where(address_table.c.PLZ == zip)
-        results = {r[0]: r[1] for r in engine.execute(s)}
+        results = {datetime.datetime.strptime(r[0], '%Y-%m-%dT%H:%M:%S').year: r[1] for r in engine.execute(s)}
         return json.dumps(results), 200
