@@ -2,4 +2,4 @@ from application import create_application
 
 app = create_application()
 
-app.run()
+app.run(debug=True)
