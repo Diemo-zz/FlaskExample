@@ -13,7 +13,7 @@ def _get_type(value_in):
 
 def import_addresses_to_database(filepath = None):
     if filepath is None:
-        filepath = 'Addresses__Berlin.csv'
+        filepath = 'Adressen__Berlin.csv'
 
     data = pd.read_csv(filepath)
 
