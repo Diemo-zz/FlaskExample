@@ -42,5 +42,9 @@ class GetNumAddedPerYear(Resource):
         s = select([address_table.c.STR_DATUM, func.count(address_table.c.PLZ)], group_by=address_table.c.STR_DATUM)
         if zip:
             s = s.where(address_table.c.PLZ == zip)
-        results = {datetime.datetime.strptime(r[0], '%Y-%m-%dT%H:%M:%S').year: r[1] for r in engine.execute(s)}
-        return json.dumps(results), 200
+        results = {r[0]: r[1] for r in engine.execute(s)}
+        summed_results = {}
+        for r, v in results.items():
+            year = datetime.datetime.strptime(r, '%Y-%m-%dT%H:%M:%S').year
+            summed_results[year] = summed_results.get(year, 0) + v
+        return json.dumps(summed_results), 200

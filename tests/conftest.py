@@ -57,7 +57,7 @@ def app():
         {
             "PLZ": 10247,
             "id":1,
-            'STR_DATUM': '1961-01-01T00:00:00'
+            'STR_DATUM': '1961-02-01T00:00:00'
         },
         ]
         data = pd.DataFrame(values)
