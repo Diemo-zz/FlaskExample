@@ -1,10 +1,9 @@
-from flask import g
+from flask import g, current_app
 from flask_restful import Resource
 from sqlalchemy import create_engine, MetaData, Table, func
 from sqlalchemy.sql import select
 from collections import Counter
 import json
-from flask import current_app
 import datetime
 
 
