@@ -23,8 +23,8 @@ def create_application(test_config=None):
 
     api = Api(app)
 
-    api.add_resource(Addresses, "/api/v1/number_of_buildings/<string:zip>", "/api/v1/number_of_buildings")
-    api.add_resource(GetNumAddedPerYear, "/api/v1/added/<string:zip>", "/api/v1/added")
+    api.add_resource(Addresses, "/api/v1/number_of_buildings/<string:zip_in>", "/api/v1/number_of_buildings")
+    api.add_resource(GetNumAddedPerYear, "/api/v1/added/<string:zip_in>", "/api/v1/added")
 
     return app
 

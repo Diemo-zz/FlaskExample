@@ -1,17 +1,9 @@
 import pandas as pd
-import numpy as np
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
+from sqlalchemy import create_engine
 from os import makedirs
 
 
-def _get_type(value_in):
-    if isinstance(value_in, np.int_):
-        return Integer
-    else:
-        return String(100)
-
-
-def import_addresses_to_database(filepath = None):
+def import_addresses_to_database(filepath=None):
     if filepath is None:
         filepath = 'Adressen__Berlin.csv'
 
@@ -32,6 +24,7 @@ def import_addresses_to_database(filepath = None):
     data.drop(columns=col_to_drop, inplace=True, axis=1)
 
     data.to_sql("addresses", engine, if_exists="replace")
+
 
 if __name__ == "__main__":
     import_addresses_to_database()
