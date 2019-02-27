@@ -1,4 +1,5 @@
-from application import db
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 
 class Product(db.Model):
@@ -24,7 +25,7 @@ class Order(db.Model):
 
 
 class OrderLine(db.Model):
-    __tablename__ = "orders"
+    __tablename__ = "order_lines"
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('Product.id'))
     product = db.relationship('Product')

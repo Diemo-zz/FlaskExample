@@ -1,11 +1,9 @@
 from flask import Flask
 import os
 from flask_restful import Api
-from application.endpoints import Addresses, GetNumAddedPerYear
-from flask_sqlalchemy import SQLAlchemy
 import application.model as model
+import application.endpoints as endpoints
 
-db = SQLAlchemy()
 
 
 def URI(text_in):
@@ -29,7 +27,7 @@ def create_application(test_config=None):
         app.config.from_mapping(test_config)
 
     api = Api(app)
-    db.init_app(app)
+    model.db.init_app(app)
 
     api.add_resource(endpoints.UserActions, URI('user/<string:id_or_name>'))
     api.add_resource(endpoints.StorageActions, URI('storage/<string:id_or_name>'))

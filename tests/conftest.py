@@ -1,16 +1,15 @@
 import os
 import tempfile
 
-import pytest
 from context import application
-import pandas as pd
+import pytest
 
 
 @pytest.fixture
 def app():
     db_fd, db_path = tempfile.mkstemp()
 
-    app = application.create_application({
+    app = create_application({
         'TESTING': True,
         'DATABASE': 'sqlite:////' + db_path,
     })

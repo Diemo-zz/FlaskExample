@@ -68,6 +68,6 @@ class OrderLineActions(Resource):
         pass
 
 
-def FulfilOrder(Resource):
+class FulfilOrder(Resource):
     def get(self, order_id):
         pass
