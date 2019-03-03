@@ -1,26 +1,42 @@
-from flask import g, current_app
 from flask_restful import Resource
-from sqlalchemy import create_engine, MetaData, Table, func
-from sqlalchemy.sql import select
-from collections import Counter
-import json
-import datetime
+from flask import request
+from application.model import Product
+from application.database import database
 
 
-class UserActions(Resource):
+class ProductActions(Resource):
 
     def get(self, id_or_name):
         """Returns the user """
-        pass
+        res = Product.query.filter_by(name=id_or_name).all()
+        return [r.return_values() for r in res], 200
+
 
     def put(self, id_or_name):
-        pass
+        body = request.get_json()
+        new_name = body.get('name')
+        product = Product.query.filter_by(id=id_or_name).first()
+        if product is None:
+            return {"message": "No product to update! Use POST to create a new product"}, 404
+        product.name = new_name
+        database.session.add(product)
+        database.session.commit()
+        return {"message": "Success"}, 200
 
     def post(self, id_or_name):
-        pass
+        new_product = Product(id_or_name)
+        database.session.add(new_product)
+        database.session.commit()
+        return new_product.id, 200
+
 
     def delete(self, id_or_name):
-        pass
+        product = Product.query.filter_by(id=id_or_name).first()
+        if product is None:
+            return {"message": "No product of that id to delete"}, 404
+        database.session.delete(product)
+        database.session.commit()
+        return {"message": "Success"}, 200
 
 
 class StorageActions(Resource):

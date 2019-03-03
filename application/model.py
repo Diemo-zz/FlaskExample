@@ -1,31 +1,41 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+from application.database import database
+import json
 
 
-class Product(db.Model):
-    __tablename__ = "skus"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+class Product(database.Model):
+    #  __tablename__ = "product"
+    id = database.Column(database.Integer, primary_key=True)
+    name = database.Column(database.String)
+    #storage = database.relationship('storage')
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Product %r>' % self.name
+
+    def return_values(self):
+        return dict(name=self.name, id=self.id)
 
 
-class Storage(db.Model):
-    __tablename__ = "storages"
-    id = db.Column(db.Integer, primary_key=True)
-    quantity = db.Column(db.Integer)
-    product_id = db.Column(db.Integer, db.ForeignKey('Product.id'))
-    product = db.relationship('Product')
+#class Storage(database.Model):
+#    #  __tablename__ = "storages"
+#    id = database.Column(database.Integer, primary_key=True)
+#    quantity = database.Column(database.Integer)
+#    product_id = database.Column(database.Integer, database.ForeignKey('Product.id'))
+#    product = database.relationship('product')
 
 
-class Order(db.Model):
-    __tablename__ = "orders"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    order_line_id = db.Column(db.Integer, db.ForeignKey('OrderLine.id'))
-    order_line = db.relationship('OrderLine')
-
-
-class OrderLine(db.Model):
-    __tablename__ = "order_lines"
-    id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('Product.id'))
-    product = db.relationship('Product')
+#class Order(database.Model):
+#    #  __tablename__ = "orders"
+#    id = database.Column(database.Integer, primary_key=True)
+#    name = database.Column(database.String)
+#    order_line_id = database.Column(database.Integer, database.ForeignKey('OrderLine.id'))
+#    order_line = database.relationship('OrderLine')
+#
+#
+#class OrderLine(database.Model):
+#    #  __tablename__ = "order_lines"
+#    id = database.Column(database.Integer, primary_key=True)
+#    product_id = database.Column(database.Integer, database.ForeignKey('Product.id'))
+#    product = database.relationship('product')
