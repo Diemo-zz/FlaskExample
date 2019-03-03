@@ -33,7 +33,6 @@ class MyTestCase(unittest.TestCase):
             expected = 1
             self.assertEqual(json.loads(res.data), expected)
 
-
     def test_creating_and_retrieving_a_product(self):
         test_user = "test_user"
         with self.app.test_client() as c:
@@ -55,8 +54,8 @@ class MyTestCase(unittest.TestCase):
     def test_updating_a_product_status_code(self):
         product = "initial_name"
         with self.app.test_client() as c:
-            id = c.post('api/v1/user/{0}'.format(product))
-            res = c.put('api/v1/user/{0}'.format(json.loads(id.data)),
+            returned_id = c.post('api/v1/user/{0}'.format(product))
+            res = c.put('api/v1/user/{0}'.format(json.loads(returned_id.data)),
                         data=json.dumps(dict(name='new_product')),
                         content_type='application/json')
             self.assertEqual(res.status_code, 200)
@@ -65,8 +64,8 @@ class MyTestCase(unittest.TestCase):
         product = "test_product"
         new_name = "new_name"
         with self.app.test_client() as c:
-            id = c.post('api/v1/user/{0}'.format(product))
-            res = c.put('api/v1/user/{0}'.format(json.loads(id.data)),
+            product_id = c.post('api/v1/user/{0}'.format(product))
+            res = c.put('api/v1/user/{0}'.format(json.loads(product_id.data)),
                         data=json.dumps(dict(name=new_name)),
                         content_type='application/json')
             product = Product.query.filter_by(name=new_name).first()
@@ -83,7 +82,6 @@ class MyTestCase(unittest.TestCase):
             self.assertEqual(res.status_code, 200)
 
     def test_deleteing_a_product_when_product_is_not_there_status_code(self):
-        product = Product("name")
         with self.app.test_client() as c:
             res = c.delete('/api/v1/user/1')
             self.assertEqual(res.status_code, 404)
@@ -98,8 +96,6 @@ class MyTestCase(unittest.TestCase):
         with self.app.app_context():
             res = Product.query.filter_by(id=1).first()
             self.assertIsNone(res)
-
-
 
 
 if __name__ == '__main__':

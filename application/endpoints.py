@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from application.model import Product
+from application.model import Product, Storage
 from application.database import database
 
 
@@ -10,7 +10,6 @@ class ProductActions(Resource):
         """Returns the user """
         res = Product.query.filter_by(name=id_or_name).all()
         return [r.return_values() for r in res], 200
-
 
     def put(self, id_or_name):
         body = request.get_json()
@@ -42,7 +41,8 @@ class ProductActions(Resource):
 class StorageActions(Resource):
     def get(self, id_or_name):
         """Returns the user """
-        pass
+        storage = Storage.query.filter_by(id=id_or_name).all()
+        return storage, 200
 
     def put(self, id_or_name):
         pass
