@@ -38,22 +38,6 @@ class ProductActions(Resource):
         return {"message": "Success"}, 200
 
 
-class StorageActions(Resource):
-    def get(self, id_or_name):
-        """Returns the user """
-        storage = Storage.query.filter_by(id=id_or_name).all()
-        return storage, 200
-
-    def put(self, id_or_name):
-        pass
-
-    def post(self, id_or_name):
-        pass
-
-    def delete(self, id_or_name):
-        pass
-
-
 class OrderActions(Resource):
     def get(self, id_or_name):
         """Returns the user """

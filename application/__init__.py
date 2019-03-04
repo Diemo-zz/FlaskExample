@@ -3,12 +3,13 @@ import os
 from flask_restful import Api
 import application.model as model
 import application.endpoints as endpoints
+from application.storage import StorageActions
 from application.database import database, migrate
-
 
 
 def URI(text_in):
     return "/api/v1/"+text_in
+
 
 def create_application(test_config=None):
 
@@ -36,7 +37,7 @@ def create_application(test_config=None):
         database.create_all()
 
     api.add_resource(endpoints.ProductActions, URI('user/<string:id_or_name>'))
-    api.add_resource(endpoints.StorageActions, URI('storage/<string:id_or_name>'))
+    api.add_resource(storage.StorageActions, URI('storage/<string:id_or_name>'))
     api.add_resource(endpoints.OrderActions, URI('order/<string:id_or_name>'))
     api.add_resource(endpoints.OrderLineActions, URI('order/line/<string:id_or_name>'))
     api.add_resource(endpoints.FulfilOrder, URI('order/fufil/<string:order_id>'))
