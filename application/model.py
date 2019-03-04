@@ -36,6 +36,7 @@ class Product(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String)
     storage = database.relationship('Storage')
+    order = database.relationship('OrderLine')
 
     def __init__(self, name):
         self.name = name
