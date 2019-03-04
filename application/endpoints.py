@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from application.model import Product
+from application.model import Product, Storage
 from application.order import Order
 from application.order_line import OrderLine
 from application.database import database
@@ -115,4 +115,26 @@ class OrderLineActions(Resource):
 
 class FulfilOrder(Resource):
     def get(self, order_id):
-        pass
+        body = request.get_json()
+        storages = body.get('storages')
+        orders = body.get('lines')
+        print(storages)
+        #print(orders)
+        #return 200
+        storages2 = [Storage(quantity=s.get('quantity'), product_in=s.get('sku')) for s in storages]
+        print("S2", storages2, len(storages2))
+        orders2 = [OrderLine(quantity=o.get('quantity'), product_in=o.get('sku')) for o in orders]
+        print(orders2)
+        for s in storages2:
+            database.session.add(s)
+        for o in orders:
+            database.session.add(o)
+        database.session.commit()
+        print(storages2, orders2)
+        for order in orders:
+            print("ORDER", order.product.name)
+            storages = Storage.query.filter(Storage.product.has(name=order.product.name)).all()\
+                .order_by(Storage.quantity)
+            print(storages)
+
+

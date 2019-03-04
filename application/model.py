@@ -7,25 +7,26 @@ class Storage(database.Model):
     product_id = database.Column(database.Integer, database.ForeignKey('product.id'))
     product = database.relationship('Product', backref='product')
 
-    def init(self, quantity=0, product='default_product'):
-        if isinstance(product, int):  # then this is the id to get
-            product = Product.query.filter_by(id=product).first()
+    def __init__(self, quantity=0, product_in='default_product'):
+        if isinstance(product_in, int):  # then this is the id to get
+            product = Product.query.filter_by(id=product_in).first()
             if product is None:  # No product so we raise an error
                 raise Exception
-        elif isinstance(product, str):
-            product = Product.query.filter_by(name=product).first()
+        elif isinstance(product_in, str):
+            product = Product.query.filter_by(name=product_in).first()
             if product is None:  # we have the name so we can create it
-                product = Product(product)
+                product = Product(product_in)
+        elif isinstance(product_in, Product):
+            product = product_in
 
         if not isinstance(product, Product):
             raise Exception
-        print(self.product)
 
         self.product = product
         self.quantity = quantity
+        print(self.product, product)
 
     def __repr__(self):
-        print(self.id)
         return "Storage {id} holding {q} of product {p}".format(id=self.id, q=self.quantity, p=self.product)
 
     def return_values(self):

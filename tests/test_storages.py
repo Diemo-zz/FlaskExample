@@ -21,7 +21,7 @@ class MyTestCase(unittest.TestCase):
     def test_get_storage_with_storage(self):
         with self.app.app_context():
             p = Product("new product")
-            s = Storage(quantity=10, product=p)
+            s = Storage(quantity=10, product_in=p)
             database.session.add(s)
             database.session.commit()
         with self.app.test_client() as c:
@@ -57,7 +57,7 @@ class MyTestCase(unittest.TestCase):
     def test_updating_a_storage_changing_quantity(self):
         with self.app.app_context():
             prod = Product("product")
-            storage = Storage(quantity=0, product=prod)
+            storage = Storage(quantity=0, product_in=prod)
             database.session.add(storage)
             database.session.commit()
         with self.app.test_client() as c:
@@ -73,13 +73,13 @@ class MyTestCase(unittest.TestCase):
         with self.app.app_context():
             prod = Product("product")
             prod2 = Product("second product")
-            storage = Storage(quantity=0, product=prod)
+            storage = Storage(quantity=0, product_in=prod)
             database.session.add(storage)
             database.session.add(prod2)
             database.session.commit()
         with self.app.test_client() as c:
             res = c.put('api/v1/storage/1',
-                        data=json.dumps(dict(quantity=10, product=2)),
+                        data=json.dumps(dict(quantity=10, product_in=2)),
                         content_type='application/json')
             self.assertEqual(res.status_code, 200)
         with self.app.app_context():
@@ -88,7 +88,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_deleteing_a_storage_when_storage_is_there_status_code(self):
         product = Product("name")
-        storage = Storage(quantity=2, product=product)
+        storage = Storage(quantity=2, product_in=product)
         with self.app.app_context():
             database.session.add(storage)
             database.session.commit()

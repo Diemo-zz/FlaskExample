@@ -2,6 +2,7 @@ from flask_restful import Resource, request
 from application.model import Storage, Product
 from application.database import database
 
+
 def get_product_from_FE_description(id_or_name):
     if isinstance(id_or_name, int) or str.isdigit(id_or_name):
         product = Product.query.filter_by(id=id_or_name).first()
@@ -10,6 +11,7 @@ def get_product_from_FE_description(id_or_name):
     if product is None:
         product = Product(id_or_name)
     return product
+
 
 class StorageActions(Resource):
     def get(self, id_or_name):
@@ -35,7 +37,7 @@ class StorageActions(Resource):
         data = request.get_json()
         product = get_product_from_FE_description(id_or_name)
         quantity = data.get('quantity', 0)
-        storage = Storage(quantity=quantity, product=product)
+        storage = Storage(quantity=quantity, product_in=product)
         database.session.add(storage)
         database.session.commit()
         return storage.id, 200
