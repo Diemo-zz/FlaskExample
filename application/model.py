@@ -33,7 +33,6 @@ class Storage(database.Model):
 
 
 class Product(database.Model):
-    #__tablename__ = "product"
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String)
     storage = database.relationship('Storage')
@@ -46,20 +45,3 @@ class Product(database.Model):
 
     def return_values(self):
         return dict(name=self.name, id=self.id)
-
-
-
-
-#class Order(database.Model):
-#    #  __tablename__ = "orders"
-#    id = database.Column(database.Integer, primary_key=True)
-#    name = database.Column(database.String)
-#    order_line_id = database.Column(database.Integer, database.ForeignKey('OrderLine.id'))
-#    order_line = database.relationship('OrderLine')
-#
-#
-#class OrderLine(database.Model):
-#    #  __tablename__ = "order_lines"
-#    id = database.Column(database.Integer, primary_key=True)
-#    product_id = database.Column(database.Integer, database.ForeignKey('Product.id'))
-#    product = database.relationship('product')
